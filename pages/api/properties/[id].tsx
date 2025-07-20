@@ -1,10 +1,13 @@
-import ReviewSection from "@/components/property/ReviewSection";
+import { NextApiRequest, NextApiResponse } from "next";
+import { properties } from "@/constants";
 
-...
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
+  const { id } = req.query;
+  const property = properties.find((prop) => prop.id === id);
 
-return (
-  <>
-    <PropertyDetail property={property} />
-    <ReviewSection propertyId={property.id} />
-  </>
-);
+  if (property) {
+    res.status(200).json(property);
+  } else {
+    res.status(404).json({ message: "Property not found" });
+  }
+}
